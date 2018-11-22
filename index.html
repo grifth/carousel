@@ -6,25 +6,28 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style media="screen">
-    .carousel>img{
-      width: 600px;
-      height: 400px;
-    }
-    .carousel{
-      display: -webkit-flex;
-      display: -ms-flex;
-      display: flex;
-      align-items: flex-start;
-      transition: transform 0.5s;
-    }
-    .window{
-      width: 600px;
-      height: 400px;
-      overflow: hidden;
-    }
-    .red{
-      color:red;
-    }
+        .window{
+          width: 600px;
+          height: 400px;
+          overflow: hidden;
+        }
+
+        .carousel{
+          transition: transform 0.5s;
+          display: -webkit-flex;
+          display: -ms-flex;
+          display: flex;
+          align-items: flex-start;
+        }
+
+      .carousel>img{
+        width: 600px;
+        height: 400px;
+      }
+
+      .red{
+        color: red;
+      }
   </style>
 </head>
 <body>
@@ -35,49 +38,141 @@
     <img src="3.jpg" alt="">
   </div>
 </div>
-<button id="p1" class="red">第1张</button>
-<button id="p2">第2张</button>
-<button id="p3">第3张</button>
+  <div id="button">
+    <button>第1张</button>
+    <button>第2张</button>
+    <button>第3张</button>
+  </div>
 </body>
 <script type="text/javascript" src="./node_modules/jQuery/tmp/jquery.js">
 </script>
 <script type="text/javascript">
-var allbtn = $('button')
-for(let i=0;i<allbtn.length;i++){
-  $(allbtn[i]).on('click',function(x){
-    var index = $(x.currentTarget).index()
-    var p = - (index-1) * 600
-    $('.carousel').css({
-      transform:`translate(${p}px)`
-    })
-  })
-}
+  var allbtn = $('#button>button')
+  for(let i =0;i<allbtn.length;i++){
+        $(allbtn[i]).on('click',function(x){
+          var index = $(x.currentTarget).index()
+          var p = - index * 600
+          $('.carousel').css({
+            transform:`translate(${p}px)`
+          })
 
-var n = 0
+        n = index
+        allbtn.eq(n)
+              .addClass('red')
+              .siblings('.red').removeClass('red')
+        })
+  }
 
-var size = allbtn.length
+  var n = 0
+  var size = allbtn.length
 
-function activeButton($button){
-    $button.addClass('red')
-           .siblings('.red').removeClass('red')
-}
-function play(index){
-  allbtn.eq(index).trigger('click')
-  activeButton(allbtn.eq(index))
-}
+activeButtonAndPlay(allbtn)
+function activeButtonAndPlay($button){
+  $button.eq(n%size).trigger('click')
+        .addClass('red')
+        .siblings('.red').removeClass('red')
+  }
 function setTimer(){
-    return setInterval(()=>{
-      n += 1
-      play(n%size)
-    },1000)
+  return setInterval(()=>{
+    n+=1
+    activeButtonAndPlay(allbtn)
+  },1000)
 }
-  var timer = setTimer()
+var timer = setTimer()
+$('.window').on('mouseenter',function(){
+  window.clearInterval(timer)
+})
+$('.window').on('mouseleave',function(){
+  timer = setTimer()
+})
+</script>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+        .window{
+          width: 600px;
+          height: 400px;
+          overflow: hidden;
+        }
 
-  $('.window').on('mouseenter',function(){
-    window.clearInterval(timer)
-  })
-  $('.window').on('mouseleave',function(){
-    var timer = setTimer()
-  })
+        .carousel{
+          transition: transform 0.5s;
+          display: -webkit-flex;
+          display: -ms-flex;
+          display: flex;
+          align-items: flex-start;
+        }
+
+      .carousel>img{
+        width: 600px;
+        height: 400px;
+      }
+
+      .red{
+        color: red;
+      }
+  </style>
+</head>
+<body>
+<div class="window">
+  <div class="carousel">
+    <img src="1.jpg" alt="">
+    <img src="2.jpg" alt="">
+    <img src="3.jpg" alt="">
+  </div>
+</div>
+  <div id="button">
+    <button>第1张</button>
+    <button>第2张</button>
+    <button>第3张</button>
+  </div>
+</body>
+<script type="text/javascript" src="./node_modules/jQuery/tmp/jquery.js">
+</script>
+<script type="text/javascript">
+  var allbtn = $('#button>button')
+  for(let i =0;i<allbtn.length;i++){
+        $(allbtn[i]).on('click',function(x){
+          var index = $(x.currentTarget).index()
+          var p = - index * 600
+          $('.carousel').css({
+            transform:`translate(${p}px)`
+          })
+
+        n = index
+        allbtn.eq(n)
+              .addClass('red')
+              .siblings('.red').removeClass('red')
+        })
+  }
+
+  var n = 0
+  var size = allbtn.length
+
+activeButtonAndPlay(allbtn)
+function activeButtonAndPlay($button){
+  $button.eq(n%size).trigger('click')
+        .addClass('red')
+        .siblings('.red').removeClass('red')
+  }
+function setTimer(){
+  return setInterval(()=>{
+    n+=1
+    activeButtonAndPlay(allbtn)
+  },1000)
+}
+var timer = setTimer()
+$('.window').on('mouseenter',function(){
+  window.clearInterval(timer)
+})
+$('.window').on('mouseleave',function(){
+  timer = setTimer()
+})
 </script>
 </html>
