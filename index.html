@@ -22,6 +22,9 @@
       height: 400px;
       overflow: hidden;
     }
+    .red{
+      color:red;
+    }
   </style>
 </head>
 <body>
@@ -32,27 +35,49 @@
     <img src="3.jpg" alt="">
   </div>
 </div>
-<button id="p1">第1张</button>
+<button id="p1" class="red">第1张</button>
 <button id="p2">第2张</button>
 <button id="p3">第3张</button>
 </body>
 <script type="text/javascript" src="./node_modules/jQuery/tmp/jquery.js">
 </script>
 <script type="text/javascript">
-  $('#p1').on('click',function(){
+var allbtn = $('button')
+for(let i=0;i<allbtn.length;i++){
+  $(allbtn[i]).on('click',function(x){
+    var index = $(x.currentTarget).index()
+    var p = - (index-1) * 600
     $('.carousel').css({
-      transform:'translateX(0)'
+      transform:`translate(${p}px)`
     })
   })
-  $('#p2').on('click',function(){
-    $('.carousel').css({
-      transform:'translateX(-600px)'
-    })
+}
+
+var n = 0
+
+var size = allbtn.length
+
+function activeButton($button){
+    $button.addClass('red')
+           .siblings('.red').removeClass('red')
+}
+function play(index){
+  allbtn.eq(index).trigger('click')
+  activeButton(allbtn.eq(index))
+}
+function setTimer(){
+    return setInterval(()=>{
+      n += 1
+      play(n%size)
+    },1000)
+}
+  var timer = setTimer()
+
+  $('.window').on('mouseenter',function(){
+    window.clearInterval(timer)
   })
-  $('#p3').on('click',function(){
-    $('.carousel').css({
-      transform:'translateX(-1200px)'
-    })
+  $('.window').on('mouseleave',function(){
+    var timer = setTimer()
   })
 </script>
 </html>
